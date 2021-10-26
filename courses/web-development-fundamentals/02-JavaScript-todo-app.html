@@ -16,10 +16,11 @@
       <div class="row mt-4">
         <div class="col-md-8">
           <ul id="todo-list">
-
+            <li>Sample Todo list item</li>
           </ul>
         </div>
         <div class="col-md-4">
+          [Add new]
           <form>
             <input type="text" class="form-control" id="todoTitle" placeholder="Todo title...">
             <button onclick="newTodo()" class="addBtn btn btn-sm btn-primary form-control mt-3">Add</span>
@@ -34,15 +35,49 @@
 
   <script>
 
-    var json_data = JSON.parse( localStorage.getItem('json_data') );
+    var json_data = [
+      {
+      "UserId": 1,
+      "id": 1,
+      "title": "to do task one"
+      "complete": false
+      },
+      {
+      "UserId": 1,
+      "id": 2,
+      "title": "to do task two"
+      "complete": false
+      },
+      {
+      "UserId": 1,
+      "id": 3,
+      "title": "to do task three"
+      "complete": false
+      },
+      {
+      "UserId": 1,
+      "id": 4,
+      "title": "to do task four"
+      "complete": true
+      },
+      {
+      "UserId": 1,
+      "id": 5,
+      "title": "to do task five"
+      "complete": false
+      },
+    ];
 
-    if (json_data) {
-      json_data.forEach(element => {
-        if (element) {
-          newTodo(element.title, element.id);
-        }
-      });
+    var myList = document.getElementById("todo-list");
+
+    json_data.forEach((element => {
+      var listItem = document.createElement("li");
+      listItem.appendChild(
+        document.createTextNode(element.title)
+      );
+
     }
+
 
     registerEventListeners();
 
