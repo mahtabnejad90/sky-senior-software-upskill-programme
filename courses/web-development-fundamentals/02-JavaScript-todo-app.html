@@ -32,68 +32,35 @@
   <script>
 
     var json_data = [
-      {
-      "userId": 1,
-      "id": 1,
-      "title": "to do task one",
-      "completed": false
-      },
-      {
-      "userId": 1,
-      "id": 2,
-      "title": "to do task two",
-      "completed": false
-      },
-      {
-      "userId": 1,
-      "id": 3,
-      "title": "to do task three",
-      "completed": false
-      },
-      {
-      "userId": 1,
-      "id": 4,
-      "title": "to do task four",
-      "completed": true
-      },
-      {
-      "userId": 1,
-      "id": 5,
-      "title": "to do task five",
-      "completed": false
-      }
-    ];
+      //empty array
+     ];
 
     var myList = document.getElementById("todo-list");
 
     json_data.forEach(element => {
-      var listItem = document.createElement("li");
-      listItem.appendChild(
-        document.createTextNode(element.title)
-      );
-      var deleteLink = document.createElement("a");
+      newTodo(element.title);
+});
+          //make sure its triggered when page loads
+      registerEventListeners();
+        function registerEventListeners(){
 
-      deleteLink.href = "#";
-      deleteLink.className = "btn btn-sm btn-danger m-1 delete";
-      deleteLink.appendChild(
-        document.createTextNode("Delete")
-      );
-      listItem.appendChild(deleteLink);
-      myList.appendChild(listItem);
-    });
-    var closeButtons = document.getElementsByClassName("delete");
-    for (var i = 0; i < closeButtons.length; i++) {
-      closeButtons[i].addEventListener('click', deleteTodo, false);
-    }
+          var closeButtons = document.getElementsByClassName("delete");
+          for (var i = 0; i < closeButtons.length; i++){
+            closeButtons[i].addEventListener('click', deleteTodo, false);
+          }
+        }
+
     function deleteTodo(){
       var li = this.parentElement;
       myList.removeChild(li);
     }
-    function newTodo(){
-      var inputVal = document.getElementById("todoTitle").value;
+    function newTodo(todoTitle){
+      if(!todoTitle){
+      todoTitle = document.getElementById("todoTitle").value;
+      }
       var listItem = document.createElement("li");
       listItem.appendChild(
-        document.createTextNode(inputVal)
+        document.createTextNode(todoTitle)
       );
       var deleteLink = document.createElement("a");
       deleteLink.href = "#";
@@ -103,7 +70,11 @@
       );
       listItem.appendChild(deleteLink);
       myList.appendChild(listItem);
+      registerEventListeners();
     }
+
+// Notes:
+// DRY approach = Don't repeat yourself (refactoring)
 
   </script>
 
