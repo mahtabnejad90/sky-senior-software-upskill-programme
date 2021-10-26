@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Object-oriented JavaScript</title>
+	</head>
+
+	<body>
+		<p>This example requires you to begin by entering commands in your browser's JavaScript console</p>
+
+	</body>
+
+	<script>
+
+	//object literal - literally written out object content
+	//access the object methods and properties using the '.' notation
+	//object name 'person' acts as a namespace. Must be entered first before being able to access anything inside the object
+			const person = {
+
+				//data items - object properties
+				name: {
+					first: 'Mahtab',
+					last: 'Nejad'
+				},
+				age: 30,
+				gender: 'female',
+				interests: ['music','weightlifting'],
+
+				//functions that allow the object to do something with the data. They're also reffered to as object methods
+				bio: function() {
+					alert(this.name[0] + ' ' + this.name[1] + ' is ' + this.age + ' years old. HSe likes ' + this.interests[0] + ' and ' + this.interests[1] + '.');
+				},
+				greeting: function() {
+					alert('Hi! I\'m ' + this.name[0] + '.');
+				}
+			};
+	</script>
+
+</html>
