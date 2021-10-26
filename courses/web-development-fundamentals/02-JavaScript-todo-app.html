@@ -1,25 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<html>
   <head>
     <meta charset="utf-8">
     <title>JavaScript Tutorial - Working with JSON</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  
-<!--[if gte mso 9]><xml>
-<mso:CustomDocumentProperties>
-<mso:xd_Signature msdt:dt="string"></mso:xd_Signature>
-<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor msdt:dt="string">Williams, Peter</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor>
-<mso:Order msdt:dt="string">2057800.00000000</mso:Order>
-<mso:ComplianceAssetId msdt:dt="string"></mso:ComplianceAssetId>
-<mso:TemplateUrl msdt:dt="string"></mso:TemplateUrl>
-<mso:xd_ProgID msdt:dt="string"></mso:xd_ProgID>
-<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author msdt:dt="string">Williams, Peter</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author>
-<mso:ContentTypeId msdt:dt="string">0x0101002F8B50CBB92E5F41911ED786D3B798D0</mso:ContentTypeId>
-<mso:_SourceUrl msdt:dt="string"></mso:_SourceUrl>
-<mso:_SharedFileIndex msdt:dt="string"></mso:_SharedFileIndex>
-</mso:CustomDocumentProperties>
-</xml><![endif]-->
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
 
   <body>
 
@@ -27,16 +14,17 @@
       <h1>Javascript Todo App</h1>
 
       <div class="row mt-4">
-        <div class="col-8">
+        <div class="col-md-8">
           <ul id="todo-list">
-            
+
           </ul>
         </div>
-        <div class="col-4">
+        <div class="col-md-4">
           <form>
             <input type="text" class="form-control" id="todoTitle" placeholder="Todo title...">
             <button onclick="newTodo()" class="addBtn btn btn-sm btn-primary form-control mt-3">Add</span>
           </form>
+          <button onclick="deleteAllTodos()" class="addBtn btn btn-sm btn-danger form-control mt-5">Delete All</span>
         </div>
       </div>
 
@@ -45,87 +33,91 @@
   </body>
 
   <script>
-    var json_data = [
-      {
-        "userId": 1,
-        "id": 1,
-        "title": "delectus aut autem",
-        "completed": false
-      },
-      {
-        "userId": 1,
-        "id": 2,
-        "title": "quis ut nam facilis et officia qui",
-        "completed": false
-      },
-      {
-        "userId": 1,
-        "id": 3,
-        "title": "fugiat veniam minus",
-        "completed": false
-      },
-      {
-        "userId": 1,
-        "id": 4,
-        "title": "et porro tempora",
-        "completed": true
-      },
-      {
-        "userId": 1,
-        "id": 5,
-        "title": "laboriosam mollitia et enim quasi adipisci quia provident illum",
-        "completed": false
+
+    var json_data = JSON.parse( localStorage.getItem('json_data') );
+
+    if (json_data) {
+      json_data.forEach(element => {
+        if (element) {
+          newTodo(element.title, element.id);
+        }
+      });
+    }
+
+    registerEventListeners();
+
+    function registerEventListeners() {
+      $(".delete").on("click", function(){
+        var todoID = $(this).parent().attr('data-id');
+        deleteTodo(todoID);
+      });
+    }
+
+    function deleteTodo(todoID) {
+      $("li[data-id="+todoID+"]").slideUp();
+
+      var json_temp = JSON.parse( localStorage.getItem('json_data') );
+      delete json_temp[todoID];
+      localStorage.setItem('json_data',
+        JSON.stringify(json_temp)
+      );
+
+    }
+
+    function newTodo(todoTitle, todoID) {
+      if (!todoTitle && !todoID) {
+        todoTitle = document.getElementById("todoTitle").value;
+        if (todoTitle) {
+          var todoID = storeTodoLocal(todoTitle);
+        }
       }
-    ];
-    var myList = document.getElementById("todo-list");
+      if (todoTitle) {
+        var todoHTML = '<li style="display:none" data-id="' + todoID + '">' + todoTitle + '<a href="#" class="btn btn-sm btn-danger m-1 delete">Delete</a></li>';
+        $("#todo-list").append(todoHTML);
+        $("li[data-id="+todoID+"]").fadeIn();
+        registerEventListeners();
+      }
+    }
 
-    json_data.forEach(element => {
-      var listItem = document.createElement("li");
-      listItem.appendChild(
-        document.createTextNode(element.title) 
-      );
-      var deleteLink = document.createElement("a");
+    function storeTodoLocal(todoTitle) {
 
-      deleteLink.href = "#";
-      deleteLink.className = "btn btn-sm btn-danger m-1 delete";
-      deleteLink.appendChild(
-        document.createTextNode("Delete") 
+      // retrieve and parse existing JSON from localstorage
+      var json_temp = JSON.parse( localStorage.getItem('json_data') );
+
+      if (!json_temp) {
+        json_temp = [];
+      }
+
+      // creating a new todo ID based on length of existing localstorage array
+      var todoID = json_temp.length;
+
+      // add new todo object to JSON
+      json_temp.push({
+        "id": todoID,
+        "title": todoTitle,
+        "completed": false
+      });
+
+      // log updated JSON to console
+      console.log(json_temp);
+
+      // stringify updated JSON and store back in localStorage
+      localStorage.setItem('json_data',
+        JSON.stringify(json_temp)
       );
-      listItem.appendChild(deleteLink);
-      myList.appendChild(listItem);
-    });
-    var closeButtons = document.getElementsByClassName("delete");
-    for (var i = 0; i < closeButtons.length; i++) {
-      closeButtons[i].addEventListener('click', deleteTodo, false);
+
+      // return ID of new todo
+      return todoID;
+
     }
-    function deleteTodo() {
-      var li = this.parentElement;
-      myList.removeChild(li);
+
+    function deleteAllTodos() {
+      if (confirm("Are you sure you want to delete all of your Todos?")) {
+        localStorage.removeItem('json_data');
+        $("#todo-list").empty();
+      }
     }
-    function newTodo() {
-      var inputVal = document.getElementById("todoTitle").value;
-      var listItem = document.createElement("li");
-      listItem.appendChild(
-        document.createTextNode(inputVal) 
-      );
-      var deleteLink = document.createElement("a");
-      deleteLink.href = "#";
-      deleteLink.className = "btn btn-sm btn-danger m-1 delete";
-      deleteLink.appendChild(
-        document.createTextNode("Delete") 
-      );
-      listItem.appendChild(deleteLink);
-      myList.appendChild(listItem);
-    }
+
   </script>
 
-</html><html><head><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8"><meta name="Robots" content="NOINDEX " /></head><body></body>
-                <script type="text/javascript">
-                 var gearPage = document.getElementById('GearPage');
-                 if(null != gearPage)
-                 {
-                     gearPage.parentNode.removeChild(gearPage);
-                     document.title = "Error";
-                 }
-                 </script>
-                 </html>
+</html>
