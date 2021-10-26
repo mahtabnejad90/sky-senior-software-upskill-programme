@@ -4,8 +4,6 @@
     <meta charset="utf-8">
     <title>JavaScript Tutorial - Working with JSON</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   </head>
 
   <body>
@@ -21,11 +19,6 @@
         </div>
         <div class="col-md-4">
           [Add new]
-          <form>
-            <input type="text" class="form-control" id="todoTitle" placeholder="Todo title...">
-            <button onclick="newTodo()" class="addBtn btn btn-sm btn-primary form-control mt-3">Add</span>
-          </form>
-          <button onclick="deleteAllTodos()" class="addBtn btn btn-sm btn-danger form-control mt-5">Delete All</span>
         </div>
       </div>
 
@@ -70,13 +63,13 @@
 
     var myList = document.getElementById("todo-list");
 
-    json_data.forEach((element => {
+    json_data.forEach(element => {
       var listItem = document.createElement("li");
       listItem.appendChild(
         document.createTextNode(element.title)
       );
 
-    }
+    });
 
 
     registerEventListeners();
