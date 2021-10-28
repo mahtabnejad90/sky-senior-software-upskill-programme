@@ -48,7 +48,9 @@
     //if statement to handle errors when json data is empty
     if (json_data) {
     json_data.forEach(element => {
-      newTodo(element.title);
+      if (element) {
+      newTodo(element.title, element.id);
+    }
     });
     }
           //make sure its triggered when page loads
@@ -64,12 +66,19 @@
     function deleteTodo(){
       var li = this.parentElement;
       myList.removeChild(li);
+      var json_temp = JSON.parse( localStorage.getItem('json_data') );
+      delete json_temp[li.dataset.id];
+      localStorage.setItem('json_data',
+        JSON.stringify(json_temp)
+      );
     }
-    function newTodo(todoTitle){
-      if(!todoTitle){
+    function newTodo(todoTitle, todoID){
+      if(!todoTitle && !todoID) {
       todoTitle = document.getElementById("todoTitle").value;
+      var todoID = storeTodoLocal(todoTitle);
       }
       var listItem = document.createElement("li");
+      listItem.dataset.id = todoID;
       listItem.appendChild(
         document.createTextNode(todoTitle)
       );
@@ -86,8 +95,31 @@
       console.log(listItem);
     }
 
+    function storeTodoLocal(todoTitle) {
 
+      //get and parse existing JSON from localStorage
+      var json_temp = JSON.parse( localStorage.getItem('json_data') );
+      if (!json_temp) {
+        json_temp = [];
+      }
 
+      //adds a new todo object to JSON
+      json_temp.push({
+        "id": todoID,
+        "title": todoTitle,
+        "completed":false
+      });
+
+      //log updated JSON to console
+      console.log(json_temp);
+
+      // stringify updated JSON and stores it back in localStorage
+      localStorage.setItem('json_data',
+      JSON.stringify(json_temp)
+    );
+    // return ID of new todo
+    return todoID
+    }
 
 // Notes:
 // DRY approach = Don't repeat yourself (refactoring)
