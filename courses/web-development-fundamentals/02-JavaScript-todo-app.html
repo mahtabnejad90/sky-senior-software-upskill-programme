@@ -31,15 +31,26 @@
 
   <script>
 
+    /*
     var json_data = [
-      //empty array
+      //"userId": 1,
+      //"id": 1,
+      "title": "sample todo item",
+      "completed": false
      ];
+    */
 
+    //populate json data in the equivalent value stored in localStorage
+    var json_data = JSON.parse(localStorage.getItem('json.data'));
     var myList = document.getElementById("todo-list");
 
+
+    //if statement to handle errors when json data is empty
+    if (json_data) {
     json_data.forEach(element => {
       newTodo(element.title);
-});
+    });
+    }
           //make sure its triggered when page loads
       registerEventListeners();
         function registerEventListeners(){
@@ -74,6 +85,9 @@
       console.log("new task added");
       console.log(listItem);
     }
+
+
+
 
 // Notes:
 // DRY approach = Don't repeat yourself (refactoring)
