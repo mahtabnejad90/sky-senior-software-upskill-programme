@@ -41,7 +41,7 @@
     */
 
     //populate json data in the equivalent value stored in localStorage
-    var json_data = JSON.parse(localStorage.getItem('json.data'));
+    var json_data = JSON.parse( localStorage.getItem('json.data') );
     var myList = document.getElementById("todo-list");
 
 
@@ -54,11 +54,12 @@
     });
     }
           //make sure its triggered when page loads
-      registerEventListeners();
-        function registerEventListeners(){
+          registerEventListeners();
 
+        function registerEventListeners(){
           var closeButtons = document.getElementsByClassName("delete");
-          for (var i = 0; i < closeButtons.length; i++){
+
+          for (var i = 0; i < closeButtons.length; i++) {
             closeButtons[i].addEventListener('click', deleteTodo, false);
           }
         }
@@ -71,6 +72,7 @@
       localStorage.setItem('json_data',
         JSON.stringify(json_temp)
       );
+
     }
     function newTodo(todoTitle, todoID){
       if(!todoTitle && !todoID) {
@@ -91,8 +93,7 @@
       listItem.appendChild(deleteLink);
       myList.appendChild(listItem);
       registerEventListeners();
-      console.log("new task added");
-      console.log(listItem);
+
     }
 
     function storeTodoLocal(todoTitle) {
@@ -103,22 +104,21 @@
         json_temp = [];
       }
 
+      var todoID = json_temp.length;
       //adds a new todo object to JSON
       json_temp.push({
         "id": todoID,
         "title": todoTitle,
         "completed":false
       });
-
       //log updated JSON to console
       console.log(json_temp);
-
       // stringify updated JSON and stores it back in localStorage
       localStorage.setItem('json_data',
       JSON.stringify(json_temp)
     );
     // return ID of new todo
-    return todoID
+    return todoID;
     }
 
 // Notes:
