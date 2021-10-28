@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -19,9 +21,9 @@
         </div>
         <div class="col-4">
           <form>
-          <input type="text" class="form-control" id="todoTitle" placeholder="Todo title...">
-          <button onclick="newTodo()" class="addBtn btn btn-sm btn-primary form-control mt-3">Add</span>
-        </form>
+            <input type="text" class="form-control" id="todoTitle" placeholder="Todo title...">
+            <button onclick="newTodo()" class="addBtn btn btn-sm btn-primary form-control mt-3">Add</span>
+          </form>
         </div>
       </div>
 
@@ -31,42 +33,42 @@
 
   <script>
 
-    /*
-    var json_data = [
-      //"userId": 1,
-      //"id": 1,
-      "title": "sample todo item",
-      "completed": false
-     ];
-    */
+  /*
+  var json_data = [
+    //"userId": 1,
+    //"id": 1,
+    "title": "sample todo item",
+    "completed": false
+   ];
+  */
 
     //populate json data in the equivalent value stored in localStorage
-    var json_data = JSON.parse( localStorage.getItem('json.data') );
+    var json_data = JSON.parse( localStorage.getItem('json_data') );
     var myList = document.getElementById("todo-list");
-
 
     //if statement to handle errors when json data is empty
     if (json_data) {
-    json_data.forEach(element => {
-      if (element) {
-      newTodo(element.title, element.id);
-    }
-    });
-    }
-          //make sure its triggered when page loads
-          registerEventListeners();
-
-        function registerEventListeners(){
-          var closeButtons = document.getElementsByClassName("delete");
-
-          for (var i = 0; i < closeButtons.length; i++) {
-            closeButtons[i].addEventListener('click', deleteTodo, false);
-          }
+      json_data.forEach(element => {
+        if (element) {
+          newTodo(element.title, element.id);
         }
+      });
+    }
+    //make sure its triggered when page loads
+    registerEventListeners();
 
-    function deleteTodo(){
+    function registerEventListeners() {
+      var closeButtons = document.getElementsByClassName("delete");
+
+      for (var i = 0; i < closeButtons.length; i++) {
+        closeButtons[i].addEventListener('click', deleteTodo, false);
+      }
+    }
+
+    function deleteTodo() {
       var li = this.parentElement;
       myList.removeChild(li);
+
       var json_temp = JSON.parse( localStorage.getItem('json_data') );
       delete json_temp[li.dataset.id];
       localStorage.setItem('json_data',
@@ -74,10 +76,11 @@
       );
 
     }
-    function newTodo(todoTitle, todoID){
-      if(!todoTitle && !todoID) {
-      todoTitle = document.getElementById("todoTitle").value;
-      var todoID = storeTodoLocal(todoTitle);
+
+    function newTodo(todoTitle, todoID) {
+      if (!todoTitle && !todoID) {
+        todoTitle = document.getElementById("todoTitle").value;
+        var todoID = storeTodoLocal(todoTitle);
       }
       var listItem = document.createElement("li");
       listItem.dataset.id = todoID;
@@ -93,7 +96,6 @@
       listItem.appendChild(deleteLink);
       myList.appendChild(listItem);
       registerEventListeners();
-
     }
 
     function storeTodoLocal(todoTitle) {
@@ -103,26 +105,23 @@
       if (!json_temp) {
         json_temp = [];
       }
-
-      var todoID = json_temp.length;
       //adds a new todo object to JSON
+      var todoID = json_temp.length;
+      // add new todo object to JSON
       json_temp.push({
         "id": todoID,
         "title": todoTitle,
-        "completed":false
+        "completed": false
       });
-      //log updated JSON to console
+      // log updated JSON to console
       console.log(json_temp);
-      // stringify updated JSON and stores it back in localStorage
+      // stringify updated JSON and store back in localStorage
       localStorage.setItem('json_data',
-      JSON.stringify(json_temp)
-    );
-    // return ID of new todo
-    return todoID;
+        JSON.stringify(json_temp)
+      );
+      // return ID of new todo
+      return todoID;
     }
-
-// Notes:
-// DRY approach = Don't repeat yourself (refactoring)
 
   </script>
 
