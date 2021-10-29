@@ -56,7 +56,7 @@
       }
 
     function deleteTodo(todoID) {
-      $("li[data-id="+todoID+"]").fadeOut("fast");
+      $("li[data-id="+todoID+"]").slideUp("slow");
 
       var json_temp = JSON.parse( localStorage.getItem('json_data') );
       delete json_temp[todoID];
@@ -70,8 +70,9 @@
         todoTitle = document.getElementById("todoTitle").value;
         var todoID = storeTodoLocal(todoTitle);
       }
-      var todoHTML = '<li data-id="' + todoID + '">' + todoTitle + '<a href="#" class="btn btn-sm btn-danger m-1 delete">Delete</a></li>';
+      var todoHTML = '<li style="display:none" data-id="' + todoID + '">' + todoTitle + '<a href="#" class="btn btn-sm btn-danger m-1 delete">Delete</a></li>';
       $("#todo-list").append(todoHTML);
+      $("li[data-id="+todoID+"]").fadeIn();
       registerEventListeners();
     }
 
