@@ -123,8 +123,10 @@
       return todoID;
     }
     function deleteAllTodos() {
+      if (confirm("Are you sure you want to clear your todo list?")) {
       localStorage.removeItem('json_data');
       myList.innerHTML = '';
+    }
     }
 
   </script>
