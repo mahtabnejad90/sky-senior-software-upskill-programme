@@ -55,14 +55,15 @@
       });
       }
 
-    function deleteTodo() {
-    $("li[data-id="+todoID+"]").remove();
+    function deleteTodo(todoID) {
+      $("li[data-id="+todoID+"]").fadeOut();
+
       var json_temp = JSON.parse( localStorage.getItem('json_data') );
       delete json_temp[todoID];
       localStorage.setItem('json_data',
               JSON.stringify(json_temp)
       );
-       }
+    }
 
     function newTodo(todoTitle, todoID) {
       if (!todoTitle && !todoID) {
