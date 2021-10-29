@@ -56,7 +56,7 @@
       }
 
     function deleteTodo(todoID) {
-      $("li[data-id="+todoID+"]").fadeOut();
+      $("li[data-id="+todoID+"]").fadeOut("fast");
 
       var json_temp = JSON.parse( localStorage.getItem('json_data') );
       delete json_temp[todoID];
